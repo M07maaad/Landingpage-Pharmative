@@ -1,14 +1,9 @@
 {
-"version": 2,
-"public": true,
 "cleanUrls": true,
 "trailingSlash": false,
-"rewrites": [
-{ "source": "/(.)", "destination": "/index.html" }
-],
 "headers": [
 {
-"source": "/(.)\.(jpg|jpeg|png|gif|webp|svg)$",
+"source": "/(.*)\.(jpg|jpeg|png|gif|webp|svg)$",
 "headers": [
 {
 "key": "Cache-Control",
