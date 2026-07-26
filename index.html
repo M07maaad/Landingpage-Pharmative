@@ -153,25 +153,7 @@
             transform: translateY(0);
         }
 
-        /* Exact Logo Replication (Black rounded square with white pill line) */
-        .app-logo {
-            width: 32px;
-            height: 32px;
-            background-color: #09090b; /* Black background */
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transform: rotate(-45deg);
-        }
-        .app-logo::after {
-            content: '';
-            width: 16px;
-            height: 6px;
-            background-color: #ffffff; /* White pill line */
-            border-radius: 3px;
-            transform: rotate(45deg);
-        }
+        /* Removed old .app-logo CSS as we are using the SVG now */
 
         .accent-line {
             height: 1px;
@@ -187,8 +169,10 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
                 <!-- Logo -->
-                <div class="flex-shrink-0 flex items-center gap-4 cursor-pointer">
-                    <div class="app-logo"></div>
+                <div class="flex-shrink-0 flex items-center gap-3 cursor-pointer">
+                    <div class="p-2 bg-brand-950 rounded-[10px] flex items-center justify-center shadow-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-white h-5 w-5" aria-hidden="true"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"></path><path d="m8.5 8.5 7 7"></path></svg>
+                    </div>
                     <span class="font-black text-2xl tracking-tighter text-brand-950 mt-1">PharmaSync</span>
                 </div>
 
@@ -470,7 +454,9 @@
     <footer class="bg-white border-t border-brand-200 py-10 mt-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
             <div class="flex items-center gap-3">
-                <div class="app-logo scale-75 transform origin-left rtl:origin-right"></div>
+                 <div class="p-2 bg-brand-950 rounded-[10px] flex items-center justify-center shadow-sm scale-75 transform origin-left rtl:origin-right">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-white h-5 w-5" aria-hidden="true"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"></path><path d="m8.5 8.5 7 7"></path></svg>
+                </div>
                 <span class="font-black text-xl text-brand-950 tracking-tighter">PharmaSync</span>
             </div>
             
