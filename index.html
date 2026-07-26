@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PharmaSync | إدارة اذكى ، اسرع وأكثر كفاءة</title>
+    
+    <!-- Google Fonts: Inter for English, Cairo for Arabic -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons for sharp, modern icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        arabic: ['Cairo', 'sans-serif'],
+                    },
+                    colors: {
+                        // Strict Grayscale Palette for Nexus Style
+                        brand: {
+                            50: '#fafafa',
+                            100: '#f4f4f5',
+                            200: '#e4e4e7',
+                            300: '#d4d4d8',
+                            400: '#a1a1aa',
+                            500: '#71717a',
+                            600: '#52525b',
+                            700: '#3f3f46',
+                            800: '#27272a',
+                            900: '#18181b',
+                            950: '#09090b',
+                        }
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: 0, transform: 'translateY(30px)' },
+                            '100%': { opacity: 1, transform: 'translateY(0)' },
+                        }
+                    },
+                    backgroundImage: {
+                        'grid-pattern': `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h40v40H0V0zm20 20h20v20H20V20zM0 20h20v20H0V20z' fill='%23000000' fill-opacity='0.02' fill-rule='evenodd'/%3E%3C/svg%3E")`,
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        html[dir="rtl"] body {
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background-color: #ffffff; /* Light theme default */
+            color: #09090b;
+            overflow-x: hidden;
+        }
+
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .nexus-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 16px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.03);
+        }
+
+        .nexus-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(0,0,0,0.8), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .nexus-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(0, 0, 0, 0.1);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.08);
+            background: #ffffff;
+        }
+
+        .nexus-card:hover::before {
+            opacity: 1;
+        }
+
+        .browser-mockup {
+            border-radius: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+            background: #ffffff;
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            position: relative;
+        }
+
+        .browser-header {
+            height: 2.5rem;
+            background: #fafafa;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            padding: 0 1rem;
+            gap: 0.5rem;
+        }
+
+        .browser-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #d4d4d8;
+        }
+
+        .browser-mockup img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Exact Logo Replication (Black rounded square with white pill line) */
+        .app-logo {
+            width: 32px;
+            height: 32px;
+            background-color: #09090b; /* Black background */
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: rotate(-45deg);
+        }
+        .app-logo::after {
+            content: '';
+            width: 16px;
+            height: 6px;
+            background-color: #ffffff; /* White pill line */
+            border-radius: 3px;
+            transform: rotate(45deg);
+        }
+
+        .accent-line {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0,0,0,0.1), transparent);
+            width: 100%;
+            margin: 2rem 0;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-brand-900 selection:text-white bg-grid-pattern bg-fixed">
+
+    <nav class="fixed w-full top-0 z-50 glass-nav transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center gap-4 cursor-pointer">
+                    <div class="app-logo"></div>
+                    <span class="font-black text-2xl tracking-tighter text-brand-950 mt-1">PharmaSync</span>
+                </div>
+
+                <!-- Desktop Actions -->
+                <div class="hidden md:flex items-center gap-8">
+                    <button id="langToggle" class="text-brand-500 hover:text-brand-950 font-bold text-sm transition-colors flex items-center gap-2 uppercase tracking-widest">
+                        <i class="ph ph-globe text-lg"></i>
+                        <span id="langText">English</span>
+                    </button>
+                    <!-- WhatsApp CTA (Dark Button for Light Theme) -->
+                    <a href="https://wa.me/201208087322?text=مرحبًا،%20أرغب%20في%20معرفة%20المزيد%20عن%20نظام%20PharmaSync%20وحجز%20عرض%20تجريبي." 
+                       target="_blank"
+                       class="bg-brand-950 hover:bg-brand-800 text-white px-6 py-2.5 rounded-full font-bold text-sm transition-all flex items-center gap-2 shadow-[0_4px_15px_rgba(0,0,0,0.1)] hover:shadow-[0_6px_20px_rgba(0,0,0,0.15)] hover:-translate-y-0.5">
+                        <i class="ph-fill ph-whatsapp text-lg"></i>
+                        <span data-i18n="nav_cta">تواصل معنا</span>
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center gap-5">
+                    <button id="langToggleMobile" class="text-brand-500 hover:text-brand-950 transition-colors">
+                        <i class="ph ph-globe text-2xl"></i>
+                    </button>
+                    <a href="https://wa.me/201208087322?text=مرحبًا،%20أرغب%20في%20معرفة%20المزيد%20عن%20نظام%20PharmaSync%20وحجز%20عرض%20تجريبي." 
+                       target="_blank" class="text-brand-950">
+                       <i class="ph-fill ph-whatsapp text-2xl"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="relative pt-40 pb-20 lg:pt-52 lg:pb-32 overflow-hidden">
+        <!-- Abstract subtle shape in background -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brand-100 opacity-50 rounded-full blur-[120px] pointer-events-none z-0"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative text-center z-10">
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter mb-8 max-w-5xl mx-auto leading-[1.1] text-brand-950 animate-fade-in-up drop-shadow-sm" style="animation-delay: 0.1s;" data-i18n="hero_title">
+                إدارة اذكى ، اسرع وأكثر كفاءة.
+            </h1>
+            
+            <p class="text-xl md:text-2xl text-brand-600 mb-12 max-w-3xl mx-auto font-medium animate-fade-in-up" style="animation-delay: 0.2s;" data-i18n="hero_subtitle">
+                حل ذكي لإدارة المخزون والمبيعات والصلاحية وتنبيهات الصيدلية
+            </p>
+            
+            <div class="flex items-center justify-center animate-fade-in-up" style="animation-delay: 0.3s;">
+                <a href="https://wa.me/201208087322?text=مرحبًا،%20أرغب%20في%20معرفة%20المزيد%20عن%20نظام%20PharmaSync%20وحجز%20عرض%20تجريبي." 
+                   target="_blank"
+                   class="bg-brand-950 hover:bg-brand-800 text-white px-10 py-4 rounded-full font-bold text-lg transition-all flex items-center justify-center gap-3 shadow-xl hover:shadow-2xl hover:-translate-y-1">
+                    <span data-i18n="nav_cta">تواصل معنا</span>
+                    <i class="ph-bold ph-whatsapp text-2xl"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="mt-24 max-w-[90%] mx-auto relative animate-fade-in-up" style="animation-delay: 0.5s;">
+            <div class="browser-mockup relative z-10">
+                <div class="browser-header">
+                    <div class="browser-dot"></div><div class="browser-dot"></div><div class="browser-dot"></div>
+                </div>
+                <img src="/Screenshot 2026-07-26 at 5.41.13 PM.jpg" 
+                     onerror="this.onerror=null; this.src='Screenshot%202026-07-26%20at%205.41.13%20PM.jpg'; if(!this.src.includes('%E2%80%AF')) this.src='Screenshot%202026-07-26%20at%205.41.13%E2%80%AFP.jpg';" 
+                     alt="PharmaSync Dashboard" 
+                     class="w-full h-auto object-cover">
+            </div>
+        </div>
+    </section>
+
+    <div class="accent-line max-w-7xl mx-auto"></div>
+
+    <section class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-20 reveal-on-scroll">
+                <h2 class="text-4xl md:text-5xl font-black text-brand-950 mb-4 tracking-tight" data-i18n="prob_title">هل تواجه هذه الصعوبات يوميًا ؟</h2>
+            </div>
+
+            <!-- Problems Grid -->
+            <div class="grid md:grid-cols-2 gap-8 mb-32 max-w-5xl mx-auto">
+                <div class="nexus-card p-8 reveal-on-scroll flex items-start gap-6">
+                    <div class="w-14 h-14 bg-white border border-brand-200 shadow-sm text-brand-950 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <i class="ph ph-keyboard text-3xl"></i>
+                    </div>
+                    <p class="font-bold text-brand-800 text-xl leading-relaxed mt-2" data-i18n="prob_1">إدخال فواتير الموردين يدويا يستغرق وقتا طويلا</p>
+                </div>
+                <div class="nexus-card p-8 reveal-on-scroll flex items-start gap-6" style="transition-delay: 0.1s;">
+                    <div class="w-14 h-14 bg-white border border-brand-200 shadow-sm text-brand-950 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <i class="ph ph-trend-up text-3xl"></i>
+                    </div>
+                    <p class="font-bold text-brand-800 text-xl leading-relaxed mt-2" data-i18n="prob_2">متابعة أسعار الأدوية وتحديثها باستمرار أمر صعب</p>
+                </div>
+                <div class="nexus-card p-8 reveal-on-scroll flex items-start gap-6" style="transition-delay: 0.2s;">
+                    <div class="w-14 h-14 bg-white border border-brand-200 shadow-sm text-brand-950 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <i class="ph ph-warning-circle text-3xl"></i>
+                    </div>
+                    <p class="font-bold text-brand-800 text-xl leading-relaxed mt-2" data-i18n="prob_3">اكتشاف الأدوية منخفضة المخزون بعد فوات الأوان</p>
+                </div>
+                <div class="nexus-card p-8 reveal-on-scroll flex items-start gap-6" style="transition-delay: 0.3s;">
+                    <div class="w-14 h-14 bg-white border border-brand-200 shadow-sm text-brand-950 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <i class="ph ph-calendar-x text-3xl"></i>
+                    </div>
+                    <p class="font-bold text-brand-800 text-xl leading-relaxed mt-2" data-i18n="prob_4">خسائر بسبب انتهاء صلاحية بعض الأصناف</p>
+                </div>
+            </div>
+
+            <!-- Solutions -->
+            <div class="text-center mb-16 reveal-on-scroll">
+                <div class="inline-block border border-brand-950 text-white px-10 py-4 rounded-full font-black text-3xl tracking-widest bg-brand-950 shadow-xl" data-i18n="sol_title">
+                    الحل PharmaSync!
+                </div>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="reveal-on-scroll order-2 lg:order-1">
+                    <ul class="space-y-8">
+                        <li class="flex items-start gap-5">
+                            <div class="mt-1 w-6 h-6 rounded-full border-2 border-brand-950 flex items-center justify-center flex-shrink-0 bg-white">
+                                <div class="w-2 h-2 bg-brand-950 rounded-full"></div>
+                            </div>
+                            <span class="text-brand-900 font-bold text-2xl" data-i18n="sol_1">واجهة حديثة وسهلة الاستخدام</span>
+                        </li>
+                        <li class="flex items-start gap-5">
+                            <div class="mt-1 w-6 h-6 rounded-full border-2 border-brand-950 flex items-center justify-center flex-shrink-0 bg-white">
+                                <div class="w-2 h-2 bg-brand-950 rounded-full"></div>
+                            </div>
+                            <span class="text-brand-900 font-bold text-2xl" data-i18n="sol_2">نظام يدعم الذكاء الاصطناعي للإدخال الفواتير</span>
+                        </li>
+                        <li class="flex items-start gap-5">
+                            <div class="mt-1 w-6 h-6 rounded-full border-2 border-brand-950 flex items-center justify-center flex-shrink-0 bg-white">
+                                <div class="w-2 h-2 bg-brand-950 rounded-full"></div>
+                            </div>
+                            <span class="text-brand-900 font-bold text-2xl" data-i18n="sol_3">مساعد ذكي للاجابة عن اي سؤال يخص المخزون و النظام</span>
+                        </li>
+                        <li class="flex items-start gap-5">
+                            <div class="mt-1 w-6 h-6 rounded-full border-2 border-brand-950 flex items-center justify-center flex-shrink-0 bg-white">
+                                <div class="w-2 h-2 bg-brand-950 rounded-full"></div>
+                            </div>
+                            <span class="text-brand-900 font-bold text-2xl" data-i18n="sol_4">متابعة يومية لتحديثات أسعار الأدوية</span>
+                        </li>
+                        <li class="flex items-start gap-5">
+                            <div class="mt-1 w-6 h-6 rounded-full border-2 border-brand-950 flex items-center justify-center flex-shrink-0 bg-white">
+                                <div class="w-2 h-2 bg-brand-950 rounded-full"></div>
+                            </div>
+                            <span class="text-brand-900 font-bold text-2xl" data-i18n="sol_5">تنبيهات للمخزون والصلاحية</span>
+                        </li>
+                        <li class="flex items-start gap-5">
+                            <div class="mt-1 w-6 h-6 rounded-full border-2 border-brand-950 flex items-center justify-center flex-shrink-0 bg-white">
+                                <div class="w-2 h-2 bg-brand-950 rounded-full"></div>
+                            </div>
+                            <span class="text-brand-900 font-bold text-2xl" data-i18n="sol_6">تقارير تساعدك على اتخاذ القرار</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="order-1 lg:order-2 reveal-on-scroll">
+                    <div class="browser-mockup">
+                        <div class="browser-header"><div class="browser-dot"></div><div class="browser-dot"></div><div class="browser-dot"></div></div>
+                        <img src="/Screenshot 2025-07-25 at 5.47.48 PM.jpg" 
+                             onerror="this.onerror=null; this.src='Screenshot%202025-07-25%20at%205.47.48%20PM.jpg'; if(!this.src.includes('%E2%80%AF')) this.src='Screenshot%202025-07-25%20at%205.47.48%E2%80%AFP.jpg';" 
+                             alt="AI Invoice Feature" class="w-full object-cover">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="accent-line max-w-7xl mx-auto opacity-50"></div>
+
+    <section class="py-24 relative">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="reveal-on-scroll overflow-hidden rounded-2xl border border-brand-200 bg-white shadow-[0_10px_40px_-10px_rgba(0,0,0,0.05)]">
+                <table class="w-full text-right rtl:text-right ltr:text-left">
+                    <thead>
+                        <tr class="border-b border-brand-200">
+                            <th class="w-1/2 p-8 text-2xl font-black text-brand-500 text-center uppercase tracking-widest bg-brand-50" data-i18n="comp_without">بدون PharmaSync</th>
+                            <th class="w-1/2 p-8 text-2xl font-black text-white text-center uppercase tracking-widest bg-brand-950" data-i18n="comp_with">مع PharmaSync</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-brand-100 text-center text-xl">
+                        <tr class="transition-colors hover:bg-brand-50/50">
+                            <td class="p-6 text-brand-600 font-bold" data-i18n="comp_row1_a">إدخال الفواتير يدويا</td>
+                            <td class="p-6 font-black text-brand-950 bg-brand-50/50" data-i18n="comp_row1_b">إدخالها بالذكاء الاصطناعي</td>
+                        </tr>
+                        <tr class="transition-colors hover:bg-brand-50/50">
+                            <td class="p-6 text-brand-600 font-bold" data-i18n="comp_row2_a">متابعة الأسعار يدويا</td>
+                            <td class="p-6 font-black text-brand-950 bg-brand-50/50" data-i18n="comp_row2_b">تحديثات تلقائية</td>
+                        </tr>
+                        <tr class="transition-colors hover:bg-brand-50/50">
+                            <td class="p-6 text-brand-600 font-bold" data-i18n="comp_row3_a">مراجعة الصلاحية و الكمية يدويا</td>
+                            <td class="p-6 font-black text-brand-950 bg-brand-50/50" data-i18n="comp_row3_b">تنبيهات قبل انتهاء الصلاحية او الكمية</td>
+                        </tr>
+                        <tr class="transition-colors hover:bg-brand-50/50">
+                            <td class="p-6 text-brand-600 font-bold" data-i18n="comp_row4_a">بحث يدوي</td>
+                            <td class="p-6 font-black text-brand-950 bg-brand-50/50" data-i18n="comp_row4_b">مساعد ذكي</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="mt-24 text-center reveal-on-scroll">
+                <div class="browser-mockup inline-block w-full">
+                    <div class="browser-header"><div class="browser-dot"></div><div class="browser-dot"></div><div class="browser-dot"></div></div>
+                    <img src="/Screenshot 2026-07-26 at 5.34.18 PM.jpg" 
+                         onerror="this.onerror=null; this.src='Screenshot%202026-07-26%20at%205.34.18%20PM.jpg'; if(!this.src.includes('%E2%80%AF')) this.src='Screenshot%202026-07-26%20at%205.34.18%E2%80%AFP.jpg';" 
+                         alt="Price Updates Feature" class="w-full h-auto object-cover border-t border-brand-100">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-32 relative border-y border-brand-200 bg-brand-50/50">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center reveal-on-scroll relative z-10">
+            <h2 class="text-4xl md:text-5xl font-black mb-12 text-brand-950 tracking-widest uppercase" data-i18n="vision_title">رؤيتنا</h2>
+            
+            <div class="space-y-10 text-2xl md:text-3xl leading-snug font-bold">
+                <p data-i18n="vision_p1" class="text-brand-950">نؤمن أن وقت الصيدلي يجب أن يُستثمر في رعاية المرضى، لا في الأعمال الروتينية.</p>
+                <p data-i18n="vision_p2" class="text-brand-700">لذلك صُمم هذا النظام لينجز المهام المتكررة ، ويعرض المعلومات في الوقت المناسب، حتى يصبح النظام أداة تساعد الصيدلي، لا عبئًا إضافيًا.</p>
+                <p data-i18n="vision_p3" class="text-brand-600">لأن التكنولوجيا الحقيقية تمنح الانسان وقتًا أكبر ليقوم بما يجيده.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-32 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-24 reveal-on-scroll">
+                <h2 class="text-4xl md:text-5xl font-black text-brand-950 mb-6 tracking-tight" data-i18n="steps_title">لنبدأ معًا</h2>
+                <p class="text-2xl text-brand-600 font-bold" data-i18n="steps_subtitle">الانتقال إلى PharmaSync أسهل مما تتوقع</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-32 relative">
+                <!-- Step 1 -->
+                <div class="nexus-card p-8 reveal-on-scroll text-center border-t-2 border-t-brand-300">
+                    <div class="text-7xl font-black text-brand-100 absolute top-2 right-4 select-none pointer-events-none">1</div>
+                    <div class="relative z-10">
+                        <h3 class="font-black text-2xl text-brand-950 mb-4 mt-8" data-i18n="step1_title">تواصل معنا</h3>
+                        <p class="text-brand-600 text-lg font-bold leading-relaxed" data-i18n="step1_desc">احجز عرضًا مجانيا للتعرف على النظام والإجابة عن جميع استفساراتك</p>
+                    </div>
+                </div>
+                <!-- Step 2 -->
+                <div class="nexus-card p-8 reveal-on-scroll text-center border-t-2 border-t-brand-500" style="transition-delay: 0.1s;">
+                    <div class="text-7xl font-black text-brand-100 absolute top-2 right-4 select-none pointer-events-none">2</div>
+                    <div class="relative z-10">
+                        <h3 class="font-black text-2xl text-brand-950 mb-4 mt-8" data-i18n="step2_title">نقل البيانات</h3>
+                        <p class="text-brand-600 text-lg font-bold leading-relaxed" data-i18n="step2_desc">نساعدك في نقل بيانات صيدليتك أو إدخالها دون عناء</p>
+                    </div>
+                </div>
+                <!-- Step 3 -->
+                <div class="nexus-card p-8 reveal-on-scroll text-center border-t-2 border-t-brand-700" style="transition-delay: 0.2s;">
+                    <div class="text-7xl font-black text-brand-100 absolute top-2 right-4 select-none pointer-events-none">3</div>
+                    <div class="relative z-10">
+                        <h3 class="font-black text-2xl text-brand-950 mb-4 mt-8" data-i18n="step3_title">إعداد النظام</h3>
+                        <p class="text-brand-600 text-lg font-bold leading-relaxed" data-i18n="step3_desc">نقوم بضبط الإعدادات بما يناسب طريقة عمل صيدليتك</p>
+                    </div>
+                </div>
+                <!-- Step 4 -->
+                <div class="nexus-card p-8 reveal-on-scroll text-center border-t-2 border-t-brand-950 bg-brand-50" style="transition-delay: 0.3s;">
+                    <div class="text-7xl font-black text-brand-200 absolute top-2 right-4 select-none pointer-events-none">4</div>
+                    <div class="relative z-10 flex flex-col items-center justify-center h-full min-h-[150px]">
+                        <h3 class="font-black text-3xl text-brand-950 tracking-wide" data-i18n="step4_title">ابدأ بثقة</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Final Dark CTA Block -->
+            <div class="relative overflow-hidden rounded-[2rem] border border-brand-200 bg-white p-12 md:p-20 text-center shadow-2xl reveal-on-scroll">
+                <div class="absolute inset-0 bg-brand-50 opacity-50 pointer-events-none"></div>
+                <div class="relative z-10">
+                    <h2 class="text-5xl md:text-7xl font-black text-brand-950 mb-12 tracking-tight leading-tight" data-i18n="final_slogan">بكل بساطة علشان تستاهل الاحسن</h2>
+                    <a href="https://wa.me/201208087322?text=مرحبًا،%20أرغب%20في%20معرفة%20المزيد%20عن%20نظام%20PharmaSync%20وحجز%20عرض%20تجريبي." 
+                       target="_blank"
+                       class="inline-flex items-center justify-center gap-4 bg-brand-950 hover:bg-brand-800 text-white px-12 py-5 rounded-full font-black text-xl transition-all shadow-xl hover:shadow-2xl hover:-translate-y-1">
+                        <i class="ph-fill ph-whatsapp text-3xl"></i>
+                        <span data-i18n="nav_cta">تواصل معنا</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-white border-t border-brand-200 py-10 mt-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-3">
+                <div class="app-logo scale-75 transform origin-left rtl:origin-right"></div>
+                <span class="font-black text-xl text-brand-950 tracking-tighter">PharmaSync</span>
+            </div>
+            
+            <p class="text-sm text-brand-500 font-bold tracking-wide">
+                &copy; <span id="year"></span> PharmaSync. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Strict mapping of Brochure text only
+        const translations = {
+            ar: {
+                nav_cta: "تواصل معنا",
+                hero_title: "إدارة اذكى ، اسرع وأكثر كفاءة.",
+                hero_subtitle: "حل ذكي لإدارة المخزون والمبيعات والصلاحية وتنبيهات الصيدلية",
+                
+                prob_title: "هل تواجه هذه الصعوبات يوميًا ؟",
+                prob_1: "إدخال فواتير الموردين يدويا يستغرق وقتا طويلا",
+                prob_2: "متابعة أسعار الأدوية وتحديثها باستمرار أمر صعب",
+                prob_3: "اكتشاف الأدوية منخفضة المخزون بعد فوات الأوان",
+                prob_4: "خسائر بسبب انتهاء صلاحية بعض الأصناف",
+                
+                sol_title: "الحل PharmaSync!",
+                sol_1: "واجهة حديثة وسهلة الاستخدام",
+                sol_2: "نظام يدعم الذكاء الاصطناعي للإدخال الفواتير",
+                sol_3: "مساعد ذكي للاجابة عن اي سؤال يخص المخزون و النظام",
+                sol_4: "متابعة يومية لتحديثات أسعار الأدوية",
+                sol_5: "تنبيهات للمخزون والصلاحية",
+                sol_6: "تقارير تساعدك على اتخاذ القرار",
+
+                comp_without: "بدون PharmaSync",
+                comp_with: "مع PharmaSync",
+                comp_row1_a: "إدخال الفواتير يدويا",
+                comp_row1_b: "إدخالها بالذكاء الاصطناعي",
+                comp_row2_a: "متابعة الأسعار يدويا",
+                comp_row2_b: "تحديثات تلقائية",
+                comp_row3_a: "مراجعة الصلاحية و الكمية يدويا",
+                comp_row3_b: "تنبيهات قبل انتهاء الصلاحية او الكمية",
+                comp_row4_a: "بحث يدوي",
+                comp_row4_b: "مساعد ذكي",
+
+                vision_title: "رؤيتنا",
+                vision_p1: "نؤمن أن وقت الصيدلي يجب أن يُستثمر في رعاية المرضى، لا في الأعمال الروتينية.",
+                vision_p2: "لذلك صُمم هذا النظام لينجز المهام المتكررة ، ويعرض المعلومات في الوقت المناسب، حتى يصبح النظام أداة تساعد الصيدلي، لا عبئًا إضافيًا.",
+                vision_p3: "لأن التكنولوجيا الحقيقية تمنح الانسان وقتًا أكبر ليقوم بما يجيده.",
+
+                steps_title: "لنبدأ معًا",
+                steps_subtitle: "الانتقال إلى PharmaSync أسهل مما تتوقع",
+                step1_title: "تواصل معنا",
+                step1_desc: "احجز عرضًا مجانيا للتعرف على النظام والإجابة عن جميع استفساراتك",
+                step2_title: "نقل البيانات",
+                step2_desc: "نساعدك في نقل بيانات صيدليتك أو إدخالها دون عناء",
+                step3_title: "إعداد النظام",
+                step3_desc: "نقوم بضبط الإعدادات بما يناسب طريقة عمل صيدليتك",
+                step4_title: "ابدأ بثقة",
+                
+                final_slogan: "بكل بساطة علشان تستاهل الاحسن"
+            },
+            en: {
+                nav_cta: "Contact Us",
+                hero_title: "Smarter, faster, and more efficient management.",
+                hero_subtitle: "A smart solution for managing stock, sales, expiry, and pharmacy alerts",
+                
+                prob_title: "Do you face these difficulties daily?",
+                prob_1: "Entering supplier invoices manually takes a long time",
+                prob_2: "Tracking and updating medicine prices constantly is difficult",
+                prob_3: "Discovering low stock medicines too late",
+                prob_4: "Losses due to expiry of some items",
+                
+                sol_title: "The Solution: PharmaSync!",
+                sol_1: "Modern and easy to use interface",
+                sol_2: "AI supported system for invoice entry",
+                sol_3: "Smart assistant to answer any questions regarding stock and system",
+                sol_4: "Daily tracking for medicine price updates",
+                sol_5: "Alerts for stock and expiry",
+                sol_6: "Reports that help you make decisions",
+
+                comp_without: "Without PharmaSync",
+                comp_with: "With PharmaSync",
+                comp_row1_a: "Manual invoice entry",
+                comp_row1_b: "AI data entry",
+                comp_row2_a: "Manual price tracking",
+                comp_row2_b: "Automatic updates",
+                comp_row3_a: "Manual expiry & quantity review",
+                comp_row3_b: "Alerts before expiry or depletion",
+                comp_row4_a: "Manual search",
+                comp_row4_b: "Smart assistant",
+
+                vision_title: "Our Vision",
+                vision_p1: "We believe the pharmacist's time should be invested in patient care, not routine work.",
+                vision_p2: "Therefore, this system was designed to accomplish repetitive tasks, and display information at the right time, so the system becomes a tool that helps the pharmacist, not an extra burden.",
+                vision_p3: "Because real technology gives humans more time to do what they do best.",
+
+                steps_title: "Let's Start Together",
+                steps_subtitle: "Moving to PharmaSync is easier than you expect",
+                step1_title: "Contact Us",
+                step1_desc: "Book a free demo to discover the system and answer all your inquiries",
+                step2_title: "Data Transfer",
+                step2_desc: "We help you transfer your pharmacy data or enter it effortlessly",
+                step3_title: "System Setup",
+                step3_desc: "We adjust the settings to suit your pharmacy's workflow",
+                step4_title: "Start with Confidence",
+                
+                final_slogan: "Simply because you deserve the best"
+            }
+        };
+
+        let currentLang = 'ar'; // Default language
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            document.documentElement.lang = lang;
+            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+            
+            // Update button texts
+            document.getElementById('langText').textContent = lang === 'ar' ? 'English' : 'العربية';
+            
+            // Update all elements with data-i18n attribute
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang][key]) {
+                    el.textContent = translations[lang][key];
+                }
+            });
+        }
+
+        // Toggle Language Event Listeners
+        const toggleLang = () => setLanguage(currentLang === 'en' ? 'ar' : 'en');
+        document.getElementById('langToggle').addEventListener('click', toggleLang);
+        document.getElementById('langToggleMobile').addEventListener('click', toggleLang);
+
+        // --- Scroll Animations ---
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
+
+        // --- Navbar Scroll Effect ---
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 20) {
+                nav.classList.replace('glass-nav', 'bg-white/95');
+                nav.style.backdropFilter = 'blur(16px)';
+                nav.style.boxShadow = '0 4px 20px rgba(0,0,0,0.05)';
+                nav.style.borderBottom = '1px solid rgba(0,0,0,0.05)';
+            } else {
+                nav.classList.replace('bg-white/95', 'glass-nav');
+                nav.style.boxShadow = 'none';
+                nav.style.borderBottom = '1px solid rgba(0,0,0,0.05)';
+            }
+        });
+
+        // Initialize default language
+        setLanguage('ar');
+
+    </script>
+</body>
+</html>
